@@ -1,3 +1,4 @@
+from blog.formateador import formatear_post, crear_separador
 # Función para buscar posts por título
 def buscar_por_titulo(lista, termino):
     encontrados = [post for post in lista if termino.lower().strip() in post['titulo'].lower()]
@@ -18,16 +19,7 @@ def filtrar_por_tag(lista, tag):
     else:
         print("No se encontraron posts con esa etiqueta.")
 
-def crear_separador():
-    return "-" * 40
-def formatear_post(post):
-    tags = ", ".join(post["tags"])
-    return f"""
-Título: {post["titulo"]}
-Autor: {post["autor"]["nombre"]}
-Estado: {post["estado"]}
-Etiquetas: {tags}
-"""
+# Función para listar todos los posts
 def listar_posts(lista_posts):
     for post in lista_posts:
         print(crear_separador())
