@@ -5,7 +5,7 @@ class Autor:
         self.nombre = nombre
         self.bio = bio
 
-    def a_diccionario((self) -> dict:
+    def a_diccionario(self) -> dict:
         return {
             "nombre": self.nombre,
             "bio": self.bio
@@ -66,7 +66,7 @@ class Blog:
         datos_dict = [p.a_diccionario() for p in self.posts]
         guardar_posts(datos_dict)
 
-    def obtener_todos((self) -> list:
+    def obtener_todos(self) -> list:
         """Devuelve todos los objetos Post cargados."""
         return self.posts
 

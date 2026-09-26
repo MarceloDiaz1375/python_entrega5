@@ -1,48 +1,51 @@
-# Sistema de Blog
+# Sistema de Blog (Programación Orientada a Objetos + JSON)
 
-Este proyecto es un sistema simple de blog desarrollado en Python para practicar manejo de listas, funciones, validaciones y organización modular del código.
+Este proyecto es un sistema de gestión de blog desarrollado en Python, estructurado bajo el paradigma de **Programación Orientada a Objetos (POO)** y con persistencia de datos local mediante un archivo **JSON**.
 
-## ¿Cómo está organizado?
+---
 
-La estructura principal del proyecto es la siguiente:
+## 🏗️ Arquitectura y Clases (`blog/modelos.py`)
 
-- `main.py`: punto de entrada del programa. Ejecuta el menú principal.
-- `blog/`: paquete principal del sistema.
-  - `__init__.py`: marca el directorio como paquete de Python.
-  - `datos.py`: contiene los datos iniciales del blog, como el autor, los estados y la lista de posts.
-  - `operaciones.py`: incluye funciones para buscar por título, filtrar por etiquetas y listar los posts.
-  - `menu.py`: define la interfaz del menú y la lógica de navegación.
-  - `validaciones.py`: valida cada post y devuelve una lista con errores si hay inconsistencias.
+La lógica del sistema se organiza mediante tres clases principales:
 
-## ¿Qué hace el sistema?
+1. **`Autor`**:
+   - Representa al autor de una publicación.
+   - Atributos: `nombre` y `bio`.
+   - Incluye métodos para convertir el objeto a diccionario (`a_diccionario`) y reconstruirlo desde un diccionario (`desde_diccionario`).
 
-El menú permite:
+2. **`Post`**:
+   - Representa una publicación del blog.
+   - Atributos: `id`, `titulo`, `contenido`, `autor` (instancia de `Autor`), `tags` (lista de etiquetas) y `estado` (`borrador`, `publicado`, `archivado`).
+   - Implementa métodos de serialización para facilitar el guardado en JSON.
 
-1. Ver todos los posts.
-2. Buscar un post por título.
-3. Filtrar posts por tag o etiqueta.
-4. Validar cada post y mostrar los errores detectados.
-5. Salir del programa.
+3. **`Blog` (Clase Centralizadora)**:
+   - Administra la colección de objetos `Post`.
+   - Al instanciarse, se encarga de cargar las publicaciones guardadas desde `posts.json`.
+   - Ofrece métodos para:
+     - `listar_posts()`: Retorna todas las publicaciones.
+     - `buscar_por_titulo(termino)`: Busca publicaciones por coincidencia en el título.
+     - `filtrar_por_tag(tag)`: Filtra publicaciones por etiqueta.
+     - `crear_post(...)`: Instancia un `Autor` y un `Post`, lo agrega a la lista y actualiza el archivo JSON.
+     - `validar_todos_los_posts()`: Valida la estructura y campos de cada publicación.
 
-## Cómo ejecutar el sistema
+---
 
-Desde la carpeta raíz del proyecto, ejecutá:
+## 💾 Persistencia de Datos (`posts.json` + `blog/datos.py`)
 
-```bash
-python main.py
-```
+- **Lectura:** Al iniciar la aplicación en `main.py`, la clase `Blog` llama a `cargar_posts()` de `datos.py`, leyendo el archivo `posts.json` y transformando los diccionarios en objetos `Post` y `Autor`.
+- **Escritura:** Cada vez que se crea un nuevo post mediante el método `blog.crear_post()`, los objetos se convierten a formato diccionario y se guardan automáticamente en `posts.json` usando el módulo nativo `json`.
 
-Si estás en Windows PowerShell, también podés usar:
+---
 
-```powershell
-python .\main.py
-```
+## 📁 Estructura del Proyecto
 
-## Requisitos
-
-- Python 3.x
-- Ejecutar desde la raíz del proyecto para que el paquete `blog` se resuelva correctamente.
-
-## Nota
-
-El proyecto está diseñado como una práctica de modularización. Cada archivo tiene una responsabilidad específica, lo que facilita mantener y ampliar el sistema.
+```text
+├── main.py            # Punto de entrada de la aplicación
+├── posts.json         # Archivo de persistencia de datos
+├── README.md          # Documentación del proyecto
+└── blog/              # Paquete principal
+    ├── __init__.py
+    ├── datos.py        # Lectura y escritura en el archivo JSON
+    ├── formateador.py  # Formato de visualización en consola
+    ├── menu.py         # Interfaz de usuario interactiva
+    └── modelos.py      # Definición de las clases Autor, Post y Blog
